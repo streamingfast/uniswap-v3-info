@@ -100,6 +100,7 @@ const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => 
 const MAX_ITEMS = 10
 
 export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDatas: PoolData[]; maxItems?: number }) {
+  console.log('pool datas', poolDatas)
   const [currentNetwork] = useActiveNetworkVersion()
 
   // theming

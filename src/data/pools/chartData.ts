@@ -22,7 +22,7 @@ const POOL_CHART = gql`
     ) {
       date
       volumeUSD
-      tvlUSD
+      totalValueLockedUSD
       feesUSD
       pool {
         feeTier
