@@ -4,22 +4,12 @@
 // @ts-nocheck
 
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
-import { Message, proto3, protoInt64 } from "@bufbuild/protobuf";
+import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
  * @generated from message uniswap.info.v1.PoolDayDatasRequest
  */
 export class PoolDayDatasRequest extends Message<PoolDayDatasRequest> {
-  /**
-   * @generated from field: int64 startTime = 1;
-   */
-  startTime = protoInt64.zero;
-
-  /**
-   * @generated from field: int64 skip = 2;
-   */
-  skip = protoInt64.zero;
-
   /**
    * @generated from field: repeated string addresses = 3;
    */
@@ -33,8 +23,6 @@ export class PoolDayDatasRequest extends Message<PoolDayDatasRequest> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "uniswap.info.v1.PoolDayDatasRequest";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "startTime", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
-    { no: 2, name: "skip", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 3, name: "addresses", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
   ]);
 
@@ -97,19 +85,19 @@ export class PoolDayDatasResponse extends Message<PoolDayDatasResponse> {
  */
 export class PoolsDayData extends Message<PoolsDayData> {
   /**
-   * @generated from field: string date = 1;
+   * @generated from field: uint32 date = 1;
    */
-  date = "";
+  date = 0;
 
   /**
-   * @generated from field: string volumeUSD = 2;
+   * @generated from field: double volumeUSD = 2;
    */
-  volumeUSD = "";
+  volumeUSD = 0;
 
   /**
-   * @generated from field: string tvlUSD = 3;
+   * @generated from field: double tvlUSD = 3;
    */
-  tvlUSD = "";
+  tvlUSD = 0;
 
   constructor(data?: PartialMessage<PoolsDayData>) {
     super();
@@ -119,9 +107,9 @@ export class PoolsDayData extends Message<PoolsDayData> {
   static readonly runtime: typeof proto3 = proto3;
   static readonly typeName = "uniswap.info.v1.PoolsDayData";
   static readonly fields: FieldList = proto3.util.newFieldList(() => [
-    { no: 1, name: "date", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 2, name: "volumeUSD", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "tvlUSD", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 1, name: "date", kind: "scalar", T: 13 /* ScalarType.UINT32 */ },
+    { no: 2, name: "volumeUSD", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 3, name: "tvlUSD", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
   ]);
 
   static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PoolsDayData {
