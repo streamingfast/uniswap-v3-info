@@ -23,6 +23,8 @@ export const blockClient = new ApolloClient({
 export const client = new ApolloClient({
   link: new HttpLink({
     uri: 'http://127.0.0.1:8000/subgraphs/id/QmQJovmQLigEwkMWGjMT8GbeS2gjDytqWCGL58BEhLu9Ag',
+    // uri: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
+    //uri: 'https://api.thegraph.com/subgraphs/name/ianlapham/v3-minimal',
   }),
   cache: new InMemoryCache({
     typePolicies: {

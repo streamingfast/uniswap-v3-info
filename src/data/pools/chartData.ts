@@ -35,7 +35,7 @@ interface ChartResults {
   poolDayDatas: {
     date: number
     volumeUSD: string
-    tvlUSD: string
+    totalValueLockedUSD: string
     feesUSD: string
     pool: {
       feeTier: string
@@ -47,7 +47,7 @@ export async function fetchPoolChartData(address: string, client: ApolloClient<N
   let data: {
     date: number
     volumeUSD: string
-    tvlUSD: string
+    totalValueLockedUSD: string
     feesUSD: string
     pool: {
       feeTier: string
@@ -94,7 +94,7 @@ export async function fetchPoolChartData(address: string, client: ApolloClient<N
       accum[roundedDate] = {
         date: dayData.date,
         volumeUSD: parseFloat(dayData.volumeUSD),
-        totalValueLockedUSD: parseFloat(dayData.tvlUSD) - tvlAdjust,
+        totalValueLockedUSD: parseFloat(dayData.totalValueLockedUSD) - tvlAdjust,
         feesUSD: parseFloat(dayData.feesUSD),
       }
       return accum

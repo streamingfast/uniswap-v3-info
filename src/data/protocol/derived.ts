@@ -10,6 +10,17 @@ import { updatePoolChartData } from 'state/pools/actions'
 import { PoolChartEntry, PoolData } from 'state/pools/reducer'
 import { ChartDayData } from 'types'
 import { POOL_HIDE } from '../../constants'
+import { UniswapInfo } from '../../pb/proto/service_connect'
+import { createConnectTransport, createPromiseClient } from '@bufbuild/connect-web'
+import { PoolDayDatasResponse } from '../../pb/proto/service_pb'
+
+// The transport defines what type of endpoint we're hitting.
+// In our example we'll be communicating with a Connect endpoint.
+const transport = createConnectTransport({
+  baseUrl: 'http://localhost:7878',
+})
+
+const sfKVClient = createPromiseClient(UniswapInfo, transport)
 
 /**
  * Calculates offset amount to avoid inaccurate USD data for global TVL.
@@ -131,15 +142,34 @@ export function useDerivedProtocolTVLHistory() {
           })
           return accum
         }, Promise.resolve({} as { [key: number]: ChartDayData }))
-
       // Format as array
       setChartData({ ...chartData, [currentNetwork.id]: Object.values(data) })
     }
 
+    async function fetchSF() {
+      if (!addresses) {
+        return
+      }
+      const topPools = addresses.slice(0, POOL_COUNT_FOR_AGGREGATE)
+      const resp = await fetchPoolDayDatas(topPools)
+      setChartData({ ...chartData, [currentNetwork.id]: resp.poolDaysData })
+    }
+
     if (!chartData) {
-      fetchAll()
+      if (currentNetwork.id == 0) {
+        fetchSF()
+      } else {
+        fetchAll()
+      }
     }
   }, [addresses, chartData, currentNetwork.id, dataClient, dispatch])
 
   return chartData?.[currentNetwork.id]
+}
+
+// @ts-ignore
+export async function fetchPoolDayDatas(addresses: string[]): PoolDayDatasResponse {
+  return await sfKVClient.poolDayDatas({
+    addresses: addresses,
+  })
 }

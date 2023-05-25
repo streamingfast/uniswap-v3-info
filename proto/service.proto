@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package uniswap.info.v1;
+
+service UniswapInfo {
+  rpc PoolDayDatas(PoolDayDatasRequest) returns (PoolDayDatasResponse);
+}
+
+message PoolDayDatasRequest {
+    repeated string addresses = 3;
+}
+
+message PoolDayDatasResponse  {
+    repeated PoolsDayData pool_days_data = 1;
+}
+
+message PoolsDayData {
+    uint32 date = 1;
+    double volumeUSD = 2;
+    double tvlUSD = 3;
+}
