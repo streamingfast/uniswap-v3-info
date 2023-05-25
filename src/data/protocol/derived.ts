@@ -98,6 +98,12 @@ export function useDerivedOffsetTVLHistory() {
 // # of pools to include in historical chart volume and TVL data
 const POOL_COUNT_FOR_AGGREGATE = 20
 
+export async function fetchPoolDayDatas(addresses: string[]): Promise<PoolDayDatasResponse> {
+  return await sfKVClient.poolDayDatas({
+    addresses: addresses,
+  })
+}
+
 /**
  * Derives historical TVL data for top 50 pools.
  * @returns Chart data for aggregate Uniswap TVL over time.
@@ -165,11 +171,4 @@ export function useDerivedProtocolTVLHistory() {
   }, [addresses, chartData, currentNetwork.id, dataClient, dispatch])
 
   return chartData?.[currentNetwork.id]
-}
-
-// @ts-ignore
-export async function fetchPoolDayDatas(addresses: string[]): PoolDayDatasResponse {
-  return await sfKVClient.poolDayDatas({
-    addresses: addresses,
-  })
 }
