@@ -42,6 +42,7 @@ const PRICE_CHART = gql`
       orderDirection: asc
     ) {
       periodStartUnix
+      priceUSD
       high
       low
       open
@@ -53,6 +54,7 @@ const PRICE_CHART = gql`
 interface PriceResults {
   tokenHourDatas: {
     periodStartUnix: number
+    priceUSD: string
     high: string
     low: string
     open: string
@@ -128,6 +130,45 @@ export async function fetchTokenPriceData(
         },
         fetchPolicy: 'no-cache',
       })
+
+      // if a tokenHourData has a close of 0, this means that the "hour" hasn't finished yet,
+      // so we simply set the close to the last price that was set
+      for (let i = 0; i < priceData.tokenHourDatas.length; i++) {
+        if (i == 0) {
+          continue
+        }
+        if (priceData.tokenHourDatas[i].close == '0') {
+          priceData.tokenHourDatas[i].close = priceData.tokenHourDatas[i - 1].close
+
+          if (priceData.tokenHourDatas[i - 1].close == '0') {
+            priceData.tokenHourDatas[i].close = priceData.tokenHourDatas[i].priceUSD
+          }
+        }
+
+        if (priceData.tokenHourDatas[i].open == '0') {
+          priceData.tokenHourDatas[i].open = priceData.tokenHourDatas[i - 1].open
+
+          if (priceData.tokenHourDatas[i - 1].open == '0') {
+            priceData.tokenHourDatas[i].open = priceData.tokenHourDatas[i].priceUSD
+          }
+        }
+
+        if (priceData.tokenHourDatas[i].low == '0') {
+          priceData.tokenHourDatas[i].low = priceData.tokenHourDatas[i - 1].low
+
+          if (priceData.tokenHourDatas[i - 1].low == '0') {
+            priceData.tokenHourDatas[i].low = priceData.tokenHourDatas[i].priceUSD
+          }
+        }
+
+        if (priceData.tokenHourDatas[i].high == '0') {
+          priceData.tokenHourDatas[i].high = priceData.tokenHourDatas[i - 1].high
+
+          if (priceData.tokenHourDatas[i - 1].high == '0') {
+            priceData.tokenHourDatas[i].high = priceData.tokenHourDatas[i].priceUSD
+          }
+        }
+      }
 
       if (!loading) {
         skip += 100
