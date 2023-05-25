@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client'
+import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client'
 
 export const healthClient = new ApolloClient({
   uri: 'https://api.thegraph.com/index-node/graphql',
@@ -21,7 +21,11 @@ export const blockClient = new ApolloClient({
 })
 
 export const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
+  link: new HttpLink({
+    uri: 'http://127.0.0.1:8000/subgraphs/id/QmQJovmQLigEwkMWGjMT8GbeS2gjDytqWCGL58BEhLu9Ag',
+    // uri: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
+    //uri: 'https://api.thegraph.com/subgraphs/name/ianlapham/v3-minimal',
+  }),
   cache: new InMemoryCache({
     typePolicies: {
       Token: {
